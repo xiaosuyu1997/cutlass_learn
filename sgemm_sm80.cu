@@ -357,6 +357,8 @@ gemm_tn(int m, int n, int k,
   auto swizzle_atom = composition(Swizzle<3,3,3>{},
                                   Layout<Shape <_8,Shape <_8, _8>>,
                                          Stride<_8,Stride<_1,_64>>>{});
+  // auto swizzle_atom = Layout<Shape <_8,Shape <_8, _8>>,
+  //                                   Stride<_8,Stride<_1,_64>>>{};
 
   auto sA = tile_to_shape(swizzle_atom, make_shape(bM,bK,bP));
   auto sB = tile_to_shape(swizzle_atom, make_shape(bN,bK,bP));
