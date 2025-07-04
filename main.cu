@@ -19,8 +19,10 @@ __global__ void test_kernel()
   Tensor tCsA = thr_mma.partition_A(sA);
   Tensor tCrA = thr_mma.partition_fragment_A(sA);               // (MMA,MMA_M,MMA_K,PIPE)
 
-  print("tCsA : "); print(tCsA); print("\n");
-  print("tCrA : "); print(tCrA); print("\n");
+  if (thread0()) {
+    print("tCsA : "); print(tCsA); print("\n");
+    print("tCrA : "); print(tCrA); print("\n");
+  }
 
 }
 
@@ -34,11 +36,11 @@ int main() {
   // print_latex(mma_atom);
 
   // MMA
-  using TiledMMA = decltype(make_tiled_mma(
+  auto tiled_mma = make_tiled_mma(
     MMA_Atom<SM80_16x8x8_F16F16F16F16_TN>{},
     Layout<Shape<_2,_2>>{},    // 2x2x1 MMA Atoms
     Tile<_32,_16,_8>{}
-  ));      // 32x32x16 Tiled MMA for LDSM
+  );      // 32x32x16 Tiled MMA for LDSM
   // print_latex(tiled_mma);
 
   // S2R Copy
@@ -71,8 +73,8 @@ int main() {
   print("smem layout : "); print(smem_layout); print("\n");
 
   std::cout << "start flag\n";
-  test_kernel<TiledMMA, decltype(smem_layout)>
-    <<<1, 1, size(smem_layout) * sizeof(half_t)>>>();
+  test_kernel<decltype(tiled_mma), decltype(smem_layout)>
+    <<<1, dim3(size(tiled_mma)), size(smem_layout) * sizeof(half_t)>>>();
   cudaError_t err = cudaDeviceSynchronize();
   if (err != cudaSuccess) {
     printf("CUDA error: %s\n", cudaGetErrorString(err));
