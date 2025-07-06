@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 # Explicitly set architectures (or use "native")
-set(CMAKE_CUDA_ARCHITECTURES 75 80)
+set(CMAKE_CUDA_ARCHITECTURES 75 80 90)
+
+# print env variable CUDACXX
+message(STATUS "CUDACXX: $ENV{CUDACXX}")
 
 project(HelloWorld VERSION 0.0.0 LANGUAGES CUDA CXX)
 
@@ -24,5 +27,12 @@ include_directories(
     ${CUDAToolkit_INCLUDE_DIRS}
 )
 
-add_executable(HelloWorld main.cu)
+# Automatically find all main*.cu files and create executables
+file(GLOB MAIN_SOURCES "main*.cu")
+foreach(MAIN_FILE ${MAIN_SOURCES})
+    get_filename_component(EXEC_NAME ${MAIN_FILE} NAME_WE)
+    add_executable(${EXEC_NAME} ${MAIN_FILE})
+    message(STATUS "Added executable: ${EXEC_NAME} from ${MAIN_FILE}")
+endforeach()
+
 add_executable(sgemm sgemm_sm80.cu)
