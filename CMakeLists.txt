@@ -49,3 +49,8 @@ foreach(MAIN_FILE ${MAIN_SOURCES})
     message(STATUS "Added executable: ${EXEC_NAME} from ${MAIN_FILE}")
 endforeach()
 
+# Tri Dao's Flash Attention
+add_executable(flash_attn_tridao csrc/flash_attn/main.cu)
+target_include_directories(flash_attn_tridao PRIVATE csrc/flash_attn)
+target_link_libraries(flash_attn_tridao PRIVATE "${TORCH_LIBRARIES}" cutlass eigen)
+
