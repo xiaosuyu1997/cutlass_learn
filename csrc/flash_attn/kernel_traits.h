@@ -6,8 +6,8 @@
 
 #include "cute/tensor.hpp"
 
-#include "cutlass/cutlass.h"
-#include "cutlass/layout/layout.h"
+#include <cutlass/cutlass.h>
+#include <cutlass/layout/layout.h>
 #include <cutlass/numeric_types.h>
 
 using namespace cute;

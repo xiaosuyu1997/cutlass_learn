@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 # Explicitly set architectures (or use "native")
-set(CMAKE_CUDA_ARCHITECTURES 75 80 90)
-set(TORCH_CUDA_ARCH_LIST "7.5 8.0 9.0")
+# set(CMAKE_CUDA_ARCHITECTURES 75 80 90)
+# set(TORCH_CUDA_ARCH_LIST "7.5 8.0 9.0")
+set(CMAKE_CUDA_ARCHITECTURES 80)
+set(TORCH_CUDA_ARCH_LIST "8.0")
 
 # print env variable CUDACXX
 message(STATUS "CUDACXX: $ENV{CUDACXX}")
@@ -53,4 +55,5 @@ endforeach()
 add_executable(flash_attn_tridao csrc/flash_attn/main.cu)
 target_include_directories(flash_attn_tridao PRIVATE csrc/flash_attn)
 target_link_libraries(flash_attn_tridao PRIVATE "${TORCH_LIBRARIES}" cutlass eigen)
+target_compile_options(flash_attn_tridao PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--threads=8>)
 
