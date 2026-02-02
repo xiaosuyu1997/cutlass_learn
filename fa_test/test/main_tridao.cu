@@ -1,15 +1,7 @@
 #include <torch/torch.h>
-// #include <torch/python.h>
-// #include <torch/nn/functional.h>
-// #include <c10/cuda/CUDAGuard.h>
-// #include <c10/cuda/CUDAStream.h>
-// #include <ATen/cuda/CUDAGeneratorImpl.h>  // For at::Generator and at::PhiloxCudaState
-
-// #include "philox_unpack.cuh"  // For at::cuda::philox::unpack
-// #include "flash_fwd_kernel.h"
 
 #include "test.hpp"
-
+#include "fa_kernels/tridao_fa.hpp"
 
 
 int main(int argc, const char** argv) {
@@ -34,6 +26,8 @@ int main(int argc, const char** argv) {
   std::cout << test.data.size() << " data batches initialized." << std::endl;
   std::cout << "First batch q:" << std::endl;
             // << test.data[0].q << std::endl;
+
+  // kernel
 
   return 0;
 }

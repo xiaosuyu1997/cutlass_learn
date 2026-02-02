@@ -1,8 +1,9 @@
 #pragma once
 
+#include "namespace_config.h"
 #include "kernel_traits.h"
 
-namespace test_fa{
+namespace FLASH_NAMESPACE {
 
 template<int hdim, bool is_dropout, typename scalar_t>
 struct Params2KernelTraits {
@@ -30,4 +31,4 @@ struct Params2KernelTraits<64, true, scalar_t> {
 };
 
 
-}
+}  // namespace FLASH_NAMESPACE
